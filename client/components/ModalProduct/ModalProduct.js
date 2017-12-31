@@ -33,12 +33,12 @@ export default class ModalProduct extends React.Component {
             discount: this.props.discount || '',
             image: this.props.image || '',
             loading: false,
-            categoryChosen: '',
+            categoryChosen: this.props.category,
             oldCategory: '',
             productId: this.props.productId || '',
             errors: {}
         };
-        
+
         this.state = this.initialState
     };
 
@@ -48,15 +48,15 @@ export default class ModalProduct extends React.Component {
                 if(this.source) this.source.cancel('user canceled');
             } else {
                 this.setState({
-                    title: this.props.title,
-                    description: this.props.description,
-                    price: this.props.price,
-                    discount: this.props.discount,
+                    title: this.props.title || '',
+                    description: this.props.description || '',
+                    price: this.props.price || 0,
+                    discount: this.props.discount || 0,
                     image: this.props.image,
                     productId: this.props.productId,
                     oldCategory: this.props.category,
-                    categoryChosen: this.props.categories.filter(item => item.title !== 'all')[0].title
-              });
+                    categoryChosen: this.props.category || this.props.categories.filter(item => item.title !== 'all')[0].title
+                });
             }
         }
     };
@@ -185,7 +185,7 @@ export default class ModalProduct extends React.Component {
                             name="image"
                         />
                         {this.state.errors.image &&
-                            <div className="global-error" name='image' onClick={this.clearError}>{this.state.errors.image}</div>
+                        <div className="global-error" name='image' onClick={this.clearError}>{this.state.errors.image}</div>
                         }
                         <Image wrapped size='medium' src={this.state.image || emptyImage} />
                     </div>
@@ -235,7 +235,7 @@ export default class ModalProduct extends React.Component {
                             />
 
                             {this.state.errors.categoryChosen &&
-                                <div style={{ fontSize: 13 }} className="error">{this.state.errors.categoryChosen}</div>
+                            <div style={{ fontSize: 13 }} className="error">{this.state.errors.categoryChosen}</div>
                             }
                         </Header>
                     </Modal.Description>
@@ -252,18 +252,3 @@ export default class ModalProduct extends React.Component {
         );
     }
 };
-
-
-
-
-//
-// <Dropdown
-//     placeholder="--Choose category--"
-//     options={this.props.categories.filter(category => category.value !== 'all')}
-//     onChange={this.selectChange}
-//     loading={this.state.loading}
-//     className="select"
-//     disabled={this.state.loading}
-//     error={!!this.state.errors.categoryChosen}
-//     value={this.state.categoryChosen}
-// />
